@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | OneiroMind</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='login.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', path='img/logo.png') }}">
+</head>
+<body>
+    <header class="header">
+        <img src="{{ url_for('static', path='img/logo.png') }}" alt="OneiroMind Logo" class="logo" />
+        <h1 class="brand-name">OneiroMind</h1>
+      </header>
+  <div class="login-modal">
+    <h2>Welcome Back</h2>
+    <form method="POST" action="/login" id="login-form">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" placeholder="you@example.com" required />
+
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" placeholder="Enter your password" required />
+
+      <button type="submit">Login</button>
+
+      {% if error %}
+        <p class="error-msg">{{ error }}</p>
+      {% endif %}
+      
+      {% if request.query_params.get('message') %}
+        <p class="success-msg">{{ request.query_params.get('message') }}</p>
+      {% endif %}
+
+      <p class="register-link">New user? <a href="/register">Register here</a></p>
+    </form>
+  </div>
+</body>
+</html>

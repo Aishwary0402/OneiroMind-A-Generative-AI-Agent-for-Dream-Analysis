@@ -1,0 +1,15 @@
+<!-- app/templates/result.html -->
+<!DOCTYPE html>
+<html>
+<head><title>Dream Result</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', path='img/logo.png') }}">
+</head>
+<body>
+    <h1>Dream Interpretation Result</h1>
+    <p><strong>Your Dream:</strong> {{ dream_text }}</p>
+    <p><strong>Interpretation:</strong> {{ interpretation }}</p>
+    <img src="{{ image_url }}" alt="Dream Image" style="max-width:400px;">
+    <br><br>
+    <a href="/">Submit another dream</a>
+</body>
+</html>

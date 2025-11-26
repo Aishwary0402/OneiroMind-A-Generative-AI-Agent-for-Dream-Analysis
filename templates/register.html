@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register - OneiroMind</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='register.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', path='img/logo.png') }}">
+</head>
+<body>
+  <div class="form-container">
+    <h2>Register for OneiroMind</h2>
+    <form method="POST" action="/register" id="register-form">
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit" id="register-button">Register</button>
+      <p>Already have an account? <a href="/login">Login here</a></p>
+    </form>
+
+    {% if error %}
+      <p class="error-msg">{{ error }}</p>
+    {% endif %}
+  </div>
+
+  <script>
+    // This script provides feedback to the user while the server is processing the registration
+    document.getElementById('register-form').addEventListener('submit', function() {
+      const button = document.getElementById('register-button');
+      button.disabled = true;
+      button.textContent = 'Registering...';
+    });
+  </script>
+</body>
+</html>
+

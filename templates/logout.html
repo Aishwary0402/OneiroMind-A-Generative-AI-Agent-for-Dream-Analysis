@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Logged Out</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', path='img/logo.png') }}">
+  <style>
+    .logout-container {
+      text-align: center;
+      margin-top: 100px;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+
+    .logout-container h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .logout-container p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #ccc;
+    }
+
+    .logout-container .login-btn {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      background-color: #bbff00;
+      color: #000;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .logout-container .login-btn:hover {
+      background-color: #a2e400;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="logout-container">
+    <h1>You’ve been logged out</h1>
+    <p>Thank you for visiting OneiroMind.</p>
+    <a href="/login" class="login-btn">Log in again</a>
+  </div>
+</body>
+</html>

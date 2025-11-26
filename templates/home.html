@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OneiroMind Chat</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', path='img/logo.png') }}">
+</head>
+
+<body>
+  <div class="ring-layer">
+    <div class="bg-ring ring1"></div>
+    <div class="bg-ring ring2"></div>
+    <div class="bg-ring ring3"></div>
+    <div class="bg-ring ring4"></div>
+    <div class="bg-ring ring5"></div>
+  </div>
+
+  <div class="container">
+    <header class="header">
+      <img src="{{ url_for('static', path='img/logo.png') }}" alt="OneiroMind Logo" class="logo" />
+      <h1 class="brand-name">OneiroMind</h1>
+    </header>
+
+    <button onclick="toggleSidebar()" class="toggle-sidebar-btn" aria-label="Toggle chat history sidebar">☰</button>
+
+    <div id="chat-window" class="chat-window">
+      {% if selected_session_messages %}
+        {% for msg in selected_session_messages %}
+          <div class="message {{ msg.sender }} {% if msg.image_data and not msg.text %}image-only-message{% endif %}">
+            {% if msg.image_data %}
+              <div class="image-container">
+                <img src="{{ msg.image_data }}" alt="Dream Visualization" class="dream-image" />
+              </div>
+            {% endif %}
+            {% if msg.text %}
+              <div class="message-text">{{ msg.text | safe }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="no-chat">Start a new dream conversation...</p>
+      {% endif %}
+    </div>
+
+    <form id="chat-form" class="input-bar">
+      {% if selected_session %}
+          <input type="hidden" id="session-id-input" value="{{ selected_session.id }}">
+          <input type="hidden" id="session-state" value="{{ session_state }}">
+      {% else %}
+          <input type="hidden" id="session-state" value="initial_dream">
+      {% endif %}
+      <input type="text" name="dream_text" id="user-input" placeholder="I dreamt that . . ." autocomplete="off" required />
+      <button type="button" id="mic-button" title="Speak" aria-label="Record voice input">
+        <img src="{{ url_for('static', path='img/mic-icon.png') }}" alt="Mic" />
+      </button>
+      <button type="submit" title="Send" aria-label="Send message">
+        <img src="{{ url_for('static', path='img/send-icon.png') }}" alt="Send" />
+      </button>
+    </form>
+  </div>
+
+  <div id="chat-sidebar" class="sidebar">
+    <button onclick="toggleSidebar()" class="close-sidebar-btn" aria-label="Close sidebar">×</button>
+    <h3>Your Chat History</h3>
+    <ul class="chat-history-list" id="chat-history-list">
+      <li>
+        <a href="/" class="start-new-btn {% if not selected_session %}selected{% endif %}">+ Start a new dream</a>
+      </li>
+      {% for session in chat_sessions %}
+        <li class="chat-session {% if selected_session and session.id == selected_session.id %}selected{% endif %}">
+          <div class="chat-session-info">
+            {% set user_msg = (session.messages | selectattr("sender", "equalto", "user") | list | first) %}
+            <a href="/chat/{{ session.id }}" class="chat-link">
+              {{ user_msg.text[:30] if user_msg and user_msg.text else "Untitled dream" }}...
+            </a>
+            <small class="timestamp">
+              {{ session.created_at.strftime('%d %b, %I:%M %p') }}
+            </small>
+          </div>
+          <form action="/delete_chat/{{ session.id }}" method="post" onsubmit="return confirm('Are you sure you want to delete this chat?');">
+            <button type="submit" class="delete-btn" title="Delete">🗑️</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+    <form action="/logout" method="get">
+      <button type="submit" class="logout">Logout</button>
+    </form>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById("chat-sidebar").classList.toggle("open");
+    }
+  
+    // Scroll chat window to the bottom on page load
+    window.addEventListener('load', () => {
+        const chatWindow = document.getElementById('chat-window');
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    });
+  </script>
+  <script src="{{ url_for('static', path='chat.js') }}"></script>
+  <script src="{{ url_for('static', path='chat.js') }}"></script>
+
+  <div id="image-modal" class="image-modal">
+    <span class="close-modal-btn" title="Close">&times;</span>
+    <img class="image-modal-content" id="modal-img" alt="Expanded dream image">
+  </div>
+  <script src="{{ url_for('static', path='chat.js') }}"></script>
+
+  <div id="image-modal" class="image-modal">
+    <span class="close-modal-btn" title="Close">&times;</span>
+    <img class="image-modal-content" id="modal-img" alt="Expanded dream image">
+  </div>
+</body>
+</html>
